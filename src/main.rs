@@ -16,11 +16,9 @@ fn bump(center: f32, x: f32) -> f32 {
     let width = 100.0;
 
     println!(
-        "{}",
-        peak * f32::consts::E.powf((-1.0 * (x - center)) / (width))
+        "{center}: {}",
+        peak * f32::consts::E.powf((-1.0 * (x - center).powi(2)) / (width * width * 2.0))
     );
-
-    println!("##########{}", (x - center).powf(0.8));
 
     peak * f32::consts::E.powf((-1.0 * (x - center).powi(2)) / (width * width * 2.0))
 }
