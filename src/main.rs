@@ -13,7 +13,7 @@ fn sine(freq: f32, volume: f32, duration: u64, mixer: &Mixer) {
 // Gaussian bump function :D
 fn bump(center: f32, x: f32) -> f32 {
     let peak = 1.0;
-    let width = 100.0;
+    let width = 125.0;
 
     println!(
         "{center}: {}",
@@ -29,7 +29,7 @@ fn ah(frequency: f32, duration: u64, mixer: &Mixer) {
         let harmonic = frequency * (i as f32);
         sine(
             harmonic,
-            bump(190.0, harmonic) + bump(750.0, harmonic) + bump(940.0, harmonic),
+            bump(700.0, harmonic) + bump(1220.0, harmonic) +  bump(2600.0, harmonic),
             duration,
             mixer,
         );
@@ -113,6 +113,21 @@ fn v(frequency: f32, duration: u64, mixer: &Mixer) {
     thread::sleep(Duration::from_millis(duration));
 }
 
+fn f(frequency: f32, duration: u64, mixer: &Mixer) {
+    sine(frequency, 1.0, duration, mixer);
+    for i in 2..=20 {
+        let harmonic = frequency * (i as f32);
+        sine(
+            harmonic,
+            bump(340.0, harmonic) + bump(1100.0, harmonic) + bump(2080.0, harmonic),
+            duration,
+            mixer,
+        );
+    }
+
+    thread::sleep(Duration::from_millis(duration));
+}
+
 fn o(frequency: f32, duration: u64, mixer: &Mixer) {
     sine(frequency, 1.0, duration, mixer);
     for i in 2..=20 {
@@ -173,6 +188,21 @@ fn r(frequency: f32, duration: u64, mixer: &Mixer) {
     thread::sleep(Duration::from_millis(duration));
 }
 
+fn l(frequency: f32, duration: u64, mixer: &Mixer) {
+    sine(frequency, 1.0, duration, mixer);
+    for i in 2..=20 {
+        let harmonic = frequency * (i as f32);
+        sine(
+            harmonic,
+            bump(310.0, harmonic) + bump(1050.0, harmonic) + bump(2280.0, harmonic),
+            duration,
+            mixer,
+        );
+    }
+
+    thread::sleep(Duration::from_millis(duration));
+}
+
 fn m(frequency: f32, duration: u64, mixer: &Mixer) {
     sine(270.0, 0.5, duration, mixer);
     sine(450.0, 0.5, duration, mixer);
@@ -206,6 +236,14 @@ fn g(mixer: &Mixer) {
     thread::sleep(Duration::from_millis(10));
 }
 
+fn k(mixer: &Mixer) {
+    sine(300.0, 1.0, 10, mixer);
+    sine(1990.0, 0.1, 10, mixer);
+    sine(2850.0, 0.5, 10, mixer);
+
+    thread::sleep(Duration::from_millis(10));
+}
+
 fn s(duration: u64, mixer: &Mixer) {
     let sample_rate = 44100;
     let mut data: Vec<f32> = Vec::new();
@@ -232,22 +270,22 @@ fn main() {
 
     d(mixer);
     e(370.00 * octave_mul, 100, mixer);
-    ee(370.00 * octave_mul, 1000, mixer);
+    ee(370.00 * octave_mul, 900, mixer);
     s(50, mixer);
     ee(311.12 * octave_mul, 1000, mixer);
 
     d(mixer);
     e(246.94 * octave_mul, 100, mixer);
-    ee(246.94 * octave_mul, 1000, mixer);
+    ee(246.94 * octave_mul, 900, mixer);
     s(50, mixer);
     ee(185.00 * octave_mul, 1000, mixer);
 
     g(mixer);
-    ih(207.65 * octave_mul, 300, mixer);
+    ih(207.65 * octave_mul, 200, mixer);
     v(207.65 * octave_mul, 100, mixer);
 
     m(233.08 * octave_mul, 100, mixer);
-    ee(233.08 * octave_mul, 300, mixer);
+    ee(233.08 * octave_mul, 200, mixer);
 
     ee(246.94 * octave_mul, 100, mixer);
     o(246.94 * octave_mul, 200, mixer);
@@ -256,11 +294,46 @@ fn main() {
     a(207.65 * octave_mul, 500, mixer);
     m(207.65 * octave_mul, 100, mixer);
     s(40, mixer);
-    uh(246.94 * octave_mul, 400, mixer);
-    r(246.94 * octave_mul, 75, mixer);
+    uh(246.94 * octave_mul, 300, mixer);
+    r(246.94 * octave_mul, 100, mixer);
 
     d(mixer);
     oo(185.00 * octave_mul, 1000, mixer);
+
+    thread::sleep(Duration::from_millis(1000));
+
+    ah(277.18 * octave_mul, 100, mixer);
+    ee(277.18 * octave_mul, 800, mixer);
+    m(277.18 * octave_mul, 100, mixer);
+
+    a(370.00 * octave_mul, 900, mixer);
+    f(370.00 * octave_mul, 100, mixer);
+
+    k(mixer);
+    r(311.12 * octave_mul, 100, mixer);
+    e(311.12 * octave_mul, 900, mixer);
+    s(50, mixer);
+    ee(246.94 * octave_mul, 950, mixer);
+
+    ah(207.65 * octave_mul, 100, mixer);
+    l(207.65 * octave_mul, 200, mixer);
+
+    f(233.08 * octave_mul, 100, mixer);
+    o(233.08 * octave_mul, 100, mixer);
+    r(233.08 * octave_mul, 100, mixer);
+
+    d(mixer);
+    uh(246.94 * octave_mul, 300, mixer);
+
+    l(277.18 * octave_mul, 100, mixer);
+    uh(277.18 * octave_mul, 600, mixer);
+    v(277.18 * octave_mul, 100, mixer);
+
+    uh(311.13 * octave_mul, 200, mixer);
+    v(311.13 * octave_mul, 100, mixer);
+
+    ee(277.18 * octave_mul, 100, mixer);
+    oo(277.18 * octave_mul, 900, mixer);
 
     // ah(250.00, 3000, mixer);
     // ee(250.00, 1000, mixer);
