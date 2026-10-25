@@ -13,14 +13,16 @@ fn sine(freq: f32, volume: f32, duration: u64, mixer: &Mixer) {
 // Gaussian bump function :D
 fn bump(center: f32, x: f32) -> f32 {
     let peak = 1.0;
-    let width = 3.0;
+    let width = 100.0;
 
     println!(
         "{}",
-        peak * f32::consts::E.powf((-1.0 * (x - center).powf(0.8)) / (width))
+        peak * f32::consts::E.powf((-1.0 * (x - center)) / (width))
     );
 
-    peak * f32::consts::E.powf((-1.0 * (x - center).powf(0.8)) / (width))
+    println!("##########{}", (x - center).powf(0.8));
+
+    peak * f32::consts::E.powf((-1.0 * (x - center).powi(2)) / (width * width * 2.0))
 }
 
 fn ah(frequency: f32, duration: u64, mixer: &Mixer) {
