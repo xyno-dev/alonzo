@@ -1,5 +1,5 @@
 use rodio::{
-    ChannelCount, SampleRate, buffer::SamplesBuffer::Mixer,
+    ChannelCount, SampleRate, buffer::SamplesBuffer, mixer::Mixer,
 };
 use std::{
     f32::{self, consts::PI}, fs::File, io::Write, thread, time::Duration
