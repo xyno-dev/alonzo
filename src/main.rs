@@ -2,9 +2,7 @@ use rodio::{
     ChannelCount, SampleRate, Source, buffer::SamplesBuffer, mixer::Mixer, source::SineWave,
 };
 use std::{
-    f32::{self, consts::PI},
-    thread,
-    time::Duration,
+    f32::{self, consts::PI}, fs::{self, File}, io::Write, thread, time::Duration
 };
 
 const SAMPLE_RATE: u64 = 40000;
@@ -419,6 +417,9 @@ fn main() {
     // wave.extend(ah(250.00, 3000, mixer));
     // wave.extend(ee(250.00, 1000, mixer));
     // wave.extend(oo(250.00, 1000, mixer));
+    
+    let mut out = File::create("out.raw").unwrap();
+    let _ = out.write_all(unsafe { std::slice::from_raw_parts(wave.as_ptr() as *const u8, wave.len() * 4) });
 
     let buffer = SamplesBuffer::new(ChannelCount::new(1).unwrap(), SampleRate::new(SAMPLE_RATE as u32).unwrap(), wave);
 
