@@ -1,8 +1,8 @@
 use rodio::{
-    ChannelCount, SampleRate, Source, buffer::SamplesBuffer, mixer::Mixer, source::SineWave,
+    ChannelCount, SampleRate, buffer::SamplesBuffer::Mixer,
 };
 use std::{
-    f32::{self, consts::PI}, fs::{self, File}, io::Write, thread, time::Duration
+    f32::{self, consts::PI}, fs::File, io::Write, thread, time::Duration
 };
 
 const SAMPLE_RATE: u64 = 40000;
@@ -31,7 +31,7 @@ fn bump(center: f32, x: f32) -> f32 {
     peak * f32::consts::E.powf((-1.0 * (x - center).powi(2)) / (width * width * 2.0))
 }
 
-fn ah(frequency: f32, duration: u64, mixer: &Mixer) -> Vec<f32> {
+fn ah(frequency: f32, duration: u64) -> Vec<f32> {
     let mut wave: Vec<f32> = sine(frequency, 1.0, duration);
 
     for i in 2..=20 {
@@ -50,7 +50,7 @@ fn ah(frequency: f32, duration: u64, mixer: &Mixer) -> Vec<f32> {
     wave
 }
 
-fn ee(frequency: f32, duration: u64, mixer: &Mixer) -> Vec<f32> {
+fn ee(frequency: f32, duration: u64) -> Vec<f32> {
     let mut wave: Vec<f32> = sine(frequency, 1.0, duration);
 
     for i in 2..=20 {
@@ -69,7 +69,7 @@ fn ee(frequency: f32, duration: u64, mixer: &Mixer) -> Vec<f32> {
     wave
 }
 
-fn ih(frequency: f32, duration: u64, mixer: &Mixer) -> Vec<f32> {
+fn ih(frequency: f32, duration: u64) -> Vec<f32> {
     let mut wave: Vec<f32> = sine(frequency, 1.0, duration);
 
     for i in 2..=20 {
@@ -88,7 +88,7 @@ fn ih(frequency: f32, duration: u64, mixer: &Mixer) -> Vec<f32> {
     wave
 }
 
-fn oo(frequency: f32, duration: u64, mixer: &Mixer) -> Vec<f32> {
+fn oo(frequency: f32, duration: u64) -> Vec<f32> {
     let mut wave: Vec<f32> = sine(frequency, 1.0, duration);
 
     for i in 2..=20 {
@@ -107,7 +107,7 @@ fn oo(frequency: f32, duration: u64, mixer: &Mixer) -> Vec<f32> {
     wave
 }
 
-fn e(frequency: f32, duration: u64, mixer: &Mixer) -> Vec<f32> {
+fn e(frequency: f32, duration: u64) -> Vec<f32> {
     let mut wave: Vec<f32> = sine(frequency, 1.0, duration);
 
     for i in 2..=20 {
@@ -126,7 +126,7 @@ fn e(frequency: f32, duration: u64, mixer: &Mixer) -> Vec<f32> {
     wave
 }
 
-fn v(frequency: f32, duration: u64, mixer: &Mixer) -> Vec<f32> {
+fn v(frequency: f32, duration: u64) -> Vec<f32> {
     let mut wave: Vec<f32> = sine(frequency, 1.0, duration);
 
     for i in 2..=20 {
@@ -145,7 +145,7 @@ fn v(frequency: f32, duration: u64, mixer: &Mixer) -> Vec<f32> {
     wave
 }
 
-fn f(frequency: f32, duration: u64, mixer: &Mixer) -> Vec<f32> {
+fn f(frequency: f32, duration: u64) -> Vec<f32> {
     let mut wave: Vec<f32> = sine(frequency, 1.0, duration);
 
     for i in 2..=20 {
@@ -164,7 +164,7 @@ fn f(frequency: f32, duration: u64, mixer: &Mixer) -> Vec<f32> {
     wave
 }
 
-fn o(frequency: f32, duration: u64, mixer: &Mixer) -> Vec<f32> {
+fn o(frequency: f32, duration: u64) -> Vec<f32> {
     let mut wave: Vec<f32> = sine(frequency, 1.0, duration);
 
     for i in 2..=20 {
@@ -183,7 +183,7 @@ fn o(frequency: f32, duration: u64, mixer: &Mixer) -> Vec<f32> {
     wave
 }
 
-fn a(frequency: f32, duration: u64, mixer: &Mixer) -> Vec<f32> {
+fn a(frequency: f32, duration: u64) -> Vec<f32> {
     let mut wave: Vec<f32> = sine(frequency, 1.0, duration);
 
     for i in 2..=20 {
@@ -202,7 +202,7 @@ fn a(frequency: f32, duration: u64, mixer: &Mixer) -> Vec<f32> {
     wave
 }
 
-fn uh(frequency: f32, duration: u64, mixer: &Mixer) -> Vec<f32> {
+fn uh(frequency: f32, duration: u64) -> Vec<f32> {
     let mut wave: Vec<f32> = sine(frequency, 1.0, duration);
 
     for i in 2..=20 {
@@ -221,7 +221,7 @@ fn uh(frequency: f32, duration: u64, mixer: &Mixer) -> Vec<f32> {
     wave
 }
 
-fn r(frequency: f32, duration: u64, mixer: &Mixer) -> Vec<f32> {
+fn r(frequency: f32, duration: u64) -> Vec<f32> {
     let mut wave: Vec<f32> = sine(frequency, 1.0, duration);
 
     for i in 2..=20 {
@@ -240,7 +240,7 @@ fn r(frequency: f32, duration: u64, mixer: &Mixer) -> Vec<f32> {
     wave
 }
 
-fn l(frequency: f32, duration: u64, mixer: &Mixer) -> Vec<f32> {
+fn l(frequency: f32, duration: u64) -> Vec<f32> {
     let mut wave: Vec<f32> = sine(frequency, 1.0, duration);
 
     for i in 2..=20 {
@@ -259,7 +259,7 @@ fn l(frequency: f32, duration: u64, mixer: &Mixer) -> Vec<f32> {
     wave
 }
 
-fn m(frequency: f32, duration: u64, mixer: &Mixer) -> Vec<f32> {
+fn m(frequency: f32, duration: u64) -> Vec<f32> {
     let mut wave: Vec<f32> = sine(frequency, 1.0, duration);
 
     sine(270.0, 0.05, duration);
@@ -328,7 +328,7 @@ fn k(mixer: &Mixer) -> Vec<f32> {
     wave
 }
 
-fn s(duration: u64, mixer: &Mixer) -> Vec<f32> {
+fn s(duration: u64) -> Vec<f32> {
     let mut wave: Vec<f32> = Vec::new();
 
     for _ in 0..(SAMPLE_RATE / 1000 * duration) {
@@ -347,76 +347,76 @@ fn main() {
     let mut wave: Vec<f32> = Vec::new();
 
     wave.extend(d(mixer));
-    wave.extend(e(370.00 * octave_mul, 900, mixer));
-    wave.extend(ee(370.00 * octave_mul, 100, mixer));
-    wave.extend(s(50, mixer));
-    wave.extend(ee(311.12 * octave_mul, 950, mixer));
+    wave.extend(e(370.00 * octave_mul, 900));
+    wave.extend(ee(370.00 * octave_mul, 100));
+    wave.extend(s(50));
+    wave.extend(ee(311.12 * octave_mul, 950));
 
     wave.extend(d(mixer));
-    wave.extend(e(246.94 * octave_mul, 900, mixer));
-    wave.extend(ee(246.94 * octave_mul, 100, mixer));
-    wave.extend(s(50, mixer));
-    wave.extend(ee(185.00 * octave_mul, 950, mixer));
+    wave.extend(e(246.94 * octave_mul, 900));
+    wave.extend(ee(246.94 * octave_mul, 100));
+    wave.extend(s(50));
+    wave.extend(ee(185.00 * octave_mul, 950));
 
     wave.extend(g(mixer));
-    wave.extend(ih(207.65 * octave_mul, 200, mixer));
-    wave.extend(v(207.65 * octave_mul, 100, mixer));
+    wave.extend(ih(207.65 * octave_mul, 200));
+    wave.extend(v(207.65 * octave_mul, 100));
 
-    wave.extend(m(233.08 * octave_mul, 100, mixer));
-    wave.extend(ee(233.08 * octave_mul, 200, mixer));
+    wave.extend(m(233.08 * octave_mul, 100));
+    wave.extend(ee(233.08 * octave_mul, 200));
 
-    wave.extend(ee(246.94 * octave_mul, 100, mixer));
-    wave.extend(o(246.94 * octave_mul, 200, mixer));
-    wave.extend(r(246.94 * octave_mul, 100, mixer));
+    wave.extend(ee(246.94 * octave_mul, 100));
+    wave.extend(o(246.94 * octave_mul, 200));
+    wave.extend(r(246.94 * octave_mul, 100));
 
-    wave.extend(a(207.65 * octave_mul, 500, mixer));
-    wave.extend(m(207.65 * octave_mul, 100, mixer));
-    wave.extend(s(40, mixer));
-    wave.extend(uh(246.94 * octave_mul, 300, mixer));
-    wave.extend(r(246.94 * octave_mul, 100, mixer));
+    wave.extend(a(207.65 * octave_mul, 500));
+    wave.extend(m(207.65 * octave_mul, 100));
+    wave.extend(s(40));
+    wave.extend(uh(246.94 * octave_mul, 300));
+    wave.extend(r(246.94 * octave_mul, 100));
 
     wave.extend(d(mixer));
-    wave.extend(oo(185.00 * octave_mul, 1000, mixer));
+    wave.extend(oo(185.00 * octave_mul, 1000));
 
     wave.extend(vec![0.0; SAMPLE_RATE as usize]);
 
-    wave.extend(ah(277.18 * octave_mul, 800, mixer));
-    wave.extend(ee(277.18 * octave_mul, 100, mixer));
-    wave.extend(m(277.18 * octave_mul, 100, mixer));
+    wave.extend(ah(277.18 * octave_mul, 800));
+    wave.extend(ee(277.18 * octave_mul, 100));
+    wave.extend(m(277.18 * octave_mul, 100));
 
-    wave.extend(a(370.00 * octave_mul, 900, mixer));
-    wave.extend(f(370.00 * octave_mul, 100, mixer));
+    wave.extend(a(370.00 * octave_mul, 900));
+    wave.extend(f(370.00 * octave_mul, 100));
 
     wave.extend(k(mixer));
-    wave.extend(r(311.12 * octave_mul, 100, mixer));
-    wave.extend(e(311.12 * octave_mul, 800, mixer));
-    wave.extend(ee(311.12 * octave_mul, 100, mixer));
-    wave.extend(s(50, mixer));
-    wave.extend(ee(246.94 * octave_mul, 950, mixer));
+    wave.extend(r(311.12 * octave_mul, 100));
+    wave.extend(e(311.12 * octave_mul, 800));
+    wave.extend(ee(311.12 * octave_mul, 100));
+    wave.extend(s(50));
+    wave.extend(ee(246.94 * octave_mul, 950));
 
-    wave.extend(ah(207.65 * octave_mul, 100, mixer));
-    wave.extend(l(207.65 * octave_mul, 200, mixer));
+    wave.extend(ah(207.65 * octave_mul, 100));
+    wave.extend(l(207.65 * octave_mul, 200));
 
-    wave.extend(f(233.08 * octave_mul, 100, mixer));
-    wave.extend(o(233.08 * octave_mul, 100, mixer));
-    wave.extend(r(233.08 * octave_mul, 100, mixer));
+    wave.extend(f(233.08 * octave_mul, 100));
+    wave.extend(o(233.08 * octave_mul, 100));
+    wave.extend(r(233.08 * octave_mul, 100));
 
     wave.extend(d(mixer));
-    wave.extend(uh(246.94 * octave_mul, 300, mixer));
+    wave.extend(uh(246.94 * octave_mul, 300));
 
-    wave.extend(l(277.18 * octave_mul, 100, mixer));
-    wave.extend(uh(277.18 * octave_mul, 600, mixer));
-    wave.extend(v(277.18 * octave_mul, 100, mixer));
+    wave.extend(l(277.18 * octave_mul, 100));
+    wave.extend(uh(277.18 * octave_mul, 600));
+    wave.extend(v(277.18 * octave_mul, 100));
 
-    wave.extend(uh(311.13 * octave_mul, 200, mixer));
-    wave.extend(v(311.13 * octave_mul, 100, mixer));
+    wave.extend(uh(311.13 * octave_mul, 200));
+    wave.extend(v(311.13 * octave_mul, 100));
 
-    wave.extend(ee(277.18 * octave_mul, 100, mixer));
-    wave.extend(oo(277.18 * octave_mul, 900, mixer));
+    wave.extend(ee(277.18 * octave_mul, 100));
+    wave.extend(oo(277.18 * octave_mul, 900));
     
-    // wave.extend(ah(250.00, 3000, mixer));
-    // wave.extend(ee(250.00, 1000, mixer));
-    // wave.extend(oo(250.00, 1000, mixer));
+    // wave.extend(ah(250.00, 3000));
+    // wave.extend(ee(250.00, 1000));
+    // wave.extend(oo(250.00, 1000));
     
     let mut out = File::create("out.raw").unwrap();
     let _ = out.write_all(unsafe { std::slice::from_raw_parts(wave.as_ptr() as *const u8, wave.len() * 4) });
@@ -428,8 +428,8 @@ fn main() {
     thread::sleep(Duration::from_millis(16000));
 
     // g(mixer);
-    // e(110.0, 100, mixer);
-    // ee(110.0, 900, mixer);
+    // e(110.0, 100);
+    // ee(110.0, 900);
 
-    // m(277.18 * octave_mul, 1000, mixer);
+    // m(277.18 * octave_mul, 1000);
 }
