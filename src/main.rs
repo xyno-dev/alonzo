@@ -48,31 +48,32 @@ fn main() {
                 _ => {}
             }
         } else {
-            match token {
-                "r" => wave.extend(sonor::r(frequency, duration)),
-                "l" => wave.extend(sonor::l(frequency, duration)),
+            wave.extend(match token {
+                "r" => sonor::r(frequency, duration),
+                "l" => sonor::l(frequency, duration),
 
-                "f" => wave.extend(fricative::f(frequency, duration)),
-                "v" => wave.extend(fricative::v(frequency, duration)),
-                "s" => wave.extend(fricative::s(duration)),
+                "f" => fricative::f(frequency, duration),
+                "v" => fricative::v(frequency, duration),
+                "s" => fricative::s(duration),
 
-                "d" => wave.extend(plosive::d()),
-                "g" => wave.extend(plosive::g()),
-                "k" => wave.extend(plosive::k()),
+                "d" => plosive::d(),
+                "g" => plosive::g(),
+                "k" => plosive::k(),
+                "t" => plosive::t(),
 
-                "m" => wave.extend(nasal::m(frequency, duration)),
+                "m" => nasal::m(frequency, duration),
 
-                "ah" => wave.extend(vowels::ah(frequency, duration)),
-                "ee" => wave.extend(vowels::ee(frequency, duration)),
-                "ih" => wave.extend(vowels::ih(frequency, duration)),
-                "oo" => wave.extend(vowels::oo(frequency, duration)),
-                "uh" => wave.extend(vowels::uh(frequency, duration)),
-                "a" => wave.extend(vowels::a(frequency, duration)),
-                "e" => wave.extend(vowels::e(frequency, duration)),
-                "o" => wave.extend(vowels::o(frequency, duration)),
+                "ah" => vowels::ah(frequency, duration),
+                "ee" => vowels::ee(frequency, duration),
+                "ih" => vowels::ih(frequency, duration),
+                "oo" => vowels::oo(frequency, duration),
+                "uh" => vowels::uh(frequency, duration),
+                "a" => vowels::a(frequency, duration),
+                "e" => vowels::e(frequency, duration),
+                "o" => vowels::o(frequency, duration),
 
-                _ => {}
-            }
+                _ => Vec::new()
+            });
             total_duration += duration;
         }
     }

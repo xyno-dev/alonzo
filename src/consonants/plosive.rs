@@ -47,3 +47,19 @@ pub fn k() -> Vec<f32> {
 
     wave
 }
+
+pub fn t() -> Vec<f32> {
+    let mut wave = sine(400.0, 0.7, 10);
+    wave = sine(1600.0, 1.0, 10)
+        .iter()
+        .zip(wave)
+        .map(|(x, y)| x + y)
+        .collect();
+    wave = sine(2600.0, 0.3, 10)
+        .iter()
+        .zip(wave)
+        .map(|(x, y)| x + y)
+        .collect();
+
+    wave
+}
