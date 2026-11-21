@@ -13,8 +13,6 @@ use speech::SAMPLE_RATE;
 use speech::consonants::{fricative, nasal, plosive, sonor};
 use speech::vowels;
 
-use speech::generators;
-
 fn print_usage_text(args: &mut ArgsOs) {
     let path = match args.nth(0) {
         None => String::from("alonzo"),
@@ -29,10 +27,10 @@ fn main() {
     handle.log_on_drop(false);
     let mixer = handle.mixer();
 
-    let fricative_generators = fricative::FricativeGeneratorCollection::new();
-    let nasal_generators = nasal::NasalGeneratorCollection::new();
-    let plosive_generators = plosive::PlosiveGeneratorCollection::new();
     let sonor_generators = sonor::SonorGeneratorCollection::new();
+    let fricative_generators = fricative::FricativeGeneratorCollection::new();
+    let plosive_generators = plosive::PlosiveGeneratorCollection::new();
+    let nasal_generators = nasal::NasalGeneratorCollection::new();
     let vowel_generators = vowels::VowelGeneratorCollection::new();
 
     let mut wave: Vec<f32> = Vec::new();
