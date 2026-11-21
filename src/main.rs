@@ -12,11 +12,17 @@ use speech::SAMPLE_RATE;
 use speech::consonants::{fricative, nasal, plosive, sonor};
 use speech::vowels;
 
+use speech::generators;
+
 fn main() {
     let handle = rodio::DeviceSinkBuilder::open_default_sink().expect("open default audio stream");
     let mixer = handle.mixer();
 
-    let octave_mul = 0.8;
+    let fricative_generators = fricative::FricativeGeneratorCollection::new();
+    let nasal_generators = nasal::NasalGeneratorCollection::new();
+    let plosive_generators = plosive::PlosiveGeneratorCollection::new();
+    let sonor_generators = sonor::SonorGeneratorCollection::new();
+    let vowel_generators = vowels::VowelGeneratorCollection::new();
 
     let mut wave: Vec<f32> = Vec::new();
 
@@ -37,42 +43,41 @@ fn main() {
             match token.chars().nth(0).unwrap() {
                 'f' => frequency = token[1..].parse::<f32>().expect("Frequency must be f32!"),
                 'd' => duration = token[1..].parse::<u64>().expect("Duration must be u64!"),
-                'p' => wave.extend(vec![
-                    0.0;
-                    (SAMPLE_RATE / 1000
-                        * token[1..]
-                            .parse::<u64>()
-                            .expect("Pause duration must be u64!"))
-                        as usize
-                ]),
+                'p' => {
+                    let duration = token[1..]
+                        .parse::<u64>()
+                        .expect("Pause duration must be u64!");
+                    wave.extend(vec![0.0; (SAMPLE_RATE / 1000 * duration) as usize]);
+                    total_duration += duration
+                }
                 _ => {}
             }
         } else {
             wave.extend(match token {
-                "r" => sonor::r(frequency, duration),
-                "l" => sonor::l(frequency, duration),
+                "r" => sonor_generators.r.generate(frequency, duration),
+                "l" => sonor_generators.l.generate(frequency, duration),
 
-                "f" => fricative::f(frequency, duration),
-                "v" => fricative::v(frequency, duration),
-                "s" => fricative::s(duration),
+                "f" => fricative_generators.f.generate(frequency, duration),
+                "v" => fricative_generators.v.generate(frequency, duration),
+                "s" => fricative_generators.s.generate(duration),
 
-                "d" => plosive::d(),
-                "g" => plosive::g(),
-                "k" => plosive::k(),
-                "t" => plosive::t(),
+                "d" => plosive_generators.d.generate(duration),
+                "g" => plosive_generators.g.generate(duration),
+                "k" => plosive_generators.k.generate(duration),
+                "t" => plosive_generators.t.generate(duration),
 
-                "m" => nasal::m(frequency, duration),
+                "m" => nasal_generators.m.generate(frequency, duration),
 
-                "ah" => vowels::ah(frequency, duration),
-                "ee" => vowels::ee(frequency, duration),
-                "ih" => vowels::ih(frequency, duration),
-                "oo" => vowels::oo(frequency, duration),
-                "uh" => vowels::uh(frequency, duration),
-                "a" => vowels::a(frequency, duration),
-                "e" => vowels::e(frequency, duration),
-                "o" => vowels::o(frequency, duration),
+                "ah" => vowel_generators.ah.generate(frequency, duration),
+                "ee" => vowel_generators.ee.generate(frequency, duration),
+                "ih" => vowel_generators.ih.generate(frequency, duration),
+                "oo" => vowel_generators.oo.generate(frequency, duration),
+                "uh" => vowel_generators.uh.generate(frequency, duration),
+                "a" => vowel_generators.a.generate(frequency, duration),
+                "e" => vowel_generators.e.generate(frequency, duration),
+                "o" => vowel_generators.o.generate(frequency, duration),
 
-                _ => Vec::new()
+                _ => Vec::new(),
             });
             total_duration += duration;
         }

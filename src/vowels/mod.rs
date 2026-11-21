@@ -1,153 +1,27 @@
-use crate::{bump, sine};
+use crate::generators::AdditiveGenerator;
 
-pub fn ah(frequency: f32, duration: u64) -> Vec<f32> {
-    let mut wave: Vec<f32> = sine(frequency, 1.0, duration);
-
-    for i in 2..=20 {
-        let harmonic = frequency * (i as f32);
-        wave = sine(
-            harmonic,
-            bump(700.0, harmonic) + bump(1220.0, harmonic) + bump(2600.0, harmonic),
-            duration,
-        )
-        .iter()
-        .zip(wave)
-        .map(|(x, y)| x + y)
-        .collect();
-    }
-
-    wave
+pub struct VowelGeneratorCollection {
+    pub ah: AdditiveGenerator,
+    pub ee: AdditiveGenerator,
+    pub ih: AdditiveGenerator,
+    pub oo: AdditiveGenerator,
+    pub e: AdditiveGenerator,
+    pub o: AdditiveGenerator,
+    pub a: AdditiveGenerator,
+    pub uh: AdditiveGenerator,
 }
 
-pub fn ee(frequency: f32, duration: u64) -> Vec<f32> {
-    let mut wave: Vec<f32> = sine(frequency, 1.0, duration);
-
-    for i in 2..=20 {
-        let harmonic = frequency * (i as f32);
-        wave = sine(
-            harmonic,
-            bump(270.0, harmonic) + bump(2300.0, harmonic) + bump(3000.0, harmonic),
-            duration,
-        )
-        .iter()
-        .zip(wave)
-        .map(|(x, y)| x + y)
-        .collect();
+impl VowelGeneratorCollection {
+    pub fn new() -> Self {
+        Self {
+            ah: AdditiveGenerator::new(700.0, 1220.0, 2600.0),
+            ee: AdditiveGenerator::new(270.0, 2300.0, 3000.0),
+            ih: AdditiveGenerator::new(400.0, 1800.0, 2570.0),
+            oo: AdditiveGenerator::new(320.0, 900.0, 2200.0),
+            e: AdditiveGenerator::new(330.0, 2020.0, 2300.0),
+            o: AdditiveGenerator::new(540.0, 1100.0, 2300.0),
+            a: AdditiveGenerator::new(620.0, 1660.0, 2430.0),
+            uh: AdditiveGenerator::new(620.0, 1200.0, 2150.0),
+        }
     }
-
-    wave
-}
-
-pub fn ih(frequency: f32, duration: u64) -> Vec<f32> {
-    let mut wave: Vec<f32> = sine(frequency, 1.0, duration);
-
-    for i in 2..=20 {
-        let harmonic = frequency * (i as f32);
-        wave = sine(
-            harmonic,
-            bump(400.0, harmonic) + bump(1800.0, harmonic) + bump(2570.0, harmonic),
-            duration,
-        )
-        .iter()
-        .zip(wave)
-        .map(|(x, y)| x + y)
-        .collect();
-    }
-
-    wave
-}
-
-pub fn oo(frequency: f32, duration: u64) -> Vec<f32> {
-    let mut wave: Vec<f32> = sine(frequency, 1.0, duration);
-
-    for i in 2..=20 {
-        let harmonic = frequency * (i as f32);
-        wave = sine(
-            harmonic,
-            bump(320.0, harmonic) + bump(900.0, harmonic) + bump(2200.0, harmonic),
-            duration,
-        )
-        .iter()
-        .zip(wave)
-        .map(|(x, y)| x + y)
-        .collect();
-    }
-
-    wave
-}
-
-pub fn e(frequency: f32, duration: u64) -> Vec<f32> {
-    let mut wave: Vec<f32> = sine(frequency, 1.0, duration);
-
-    for i in 2..=20 {
-        let harmonic = frequency * (i as f32);
-        wave = sine(
-            harmonic,
-            bump(330.0, harmonic) + bump(2020.0, harmonic) + bump(2300.0, harmonic),
-            duration,
-        )
-        .iter()
-        .zip(wave)
-        .map(|(x, y)| x + y)
-        .collect();
-    }
-
-    wave
-}
-
-pub fn o(frequency: f32, duration: u64) -> Vec<f32> {
-    let mut wave: Vec<f32> = sine(frequency, 1.0, duration);
-
-    for i in 2..=20 {
-        let harmonic = frequency * (i as f32);
-        wave = sine(
-            harmonic,
-            bump(540.0, harmonic) + bump(1100.0, harmonic) + bump(2300.0, harmonic),
-            duration,
-        )
-        .iter()
-        .zip(wave)
-        .map(|(x, y)| x + y)
-        .collect();
-    }
-
-    wave
-}
-
-pub fn a(frequency: f32, duration: u64) -> Vec<f32> {
-    let mut wave: Vec<f32> = sine(frequency, 1.0, duration);
-
-    for i in 2..=20 {
-        let harmonic = frequency * (i as f32);
-        wave = sine(
-            harmonic,
-            bump(620.0, harmonic) + bump(1660.0, harmonic) + bump(2430.0, harmonic),
-            duration,
-        )
-        .iter()
-        .zip(wave)
-        .map(|(x, y)| x + y)
-        .collect();
-    }
-
-    wave
-}
-
-pub fn uh(frequency: f32, duration: u64) -> Vec<f32> {
-    let mut wave: Vec<f32> = sine(frequency, 1.0, duration);
-
-    for i in 2..=20 {
-        let harmonic = frequency * (i as f32);
-        wave = sine(
-            harmonic,
-            bump(620.0, harmonic) + bump(1200.0, harmonic) + bump(2150.0, harmonic),
-            duration,
-        )
-        .iter()
-        .zip(wave)
-        .map(|(x, y)| x + y)
-        .collect();
-    }
-
-    wave
 }

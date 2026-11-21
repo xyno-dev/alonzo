@@ -1,39 +1,15 @@
-use crate::{bump, sine};
+use crate::generators::AdditiveGenerator;
 
-pub fn r(frequency: f32, duration: u64) -> Vec<f32> {
-    let mut wave: Vec<f32> = sine(frequency, 1.0, duration);
-
-    for i in 2..=20 {
-        let harmonic = frequency * (i as f32);
-        wave = sine(
-            harmonic,
-            bump(310.0, harmonic) + bump(1060.0, harmonic) + bump(1380.0, harmonic),
-            duration,
-        )
-        .iter()
-        .zip(wave)
-        .map(|(x, y)| x + y)
-        .collect();
-    }
-
-    wave
+pub struct SonorGeneratorCollection {
+    pub r: AdditiveGenerator,
+    pub l: AdditiveGenerator,
 }
 
-pub fn l(frequency: f32, duration: u64) -> Vec<f32> {
-    let mut wave: Vec<f32> = sine(frequency, 1.0, duration);
-
-    for i in 2..=20 {
-        let harmonic = frequency * (i as f32);
-        wave = sine(
-            harmonic,
-            bump(310.0, harmonic) + bump(1050.0, harmonic) + bump(2280.0, harmonic),
-            duration,
-        )
-        .iter()
-        .zip(wave)
-        .map(|(x, y)| x + y)
-        .collect();
+impl SonorGeneratorCollection {
+    pub fn new() -> Self {
+        Self {
+            r: AdditiveGenerator::new(310.0, 1060.0, 1380.0),
+            l: AdditiveGenerator::new(310.0, 1050.0, 2280.0),
+        }
     }
-
-    wave
 }

@@ -1,6 +1,7 @@
 use std::f32::consts::{E, PI};
 
 pub mod consonants;
+pub mod generators;
 pub mod vowels;
 
 pub const SAMPLE_RATE: u64 = 40000;
