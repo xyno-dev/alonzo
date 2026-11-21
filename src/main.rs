@@ -1,6 +1,7 @@
 use rodio::{ChannelCount, SampleRate, buffer::SamplesBuffer};
 
 use std::{
+    env::{ArgsOs, args_os},
     f32,
     fs::File,
     io::{Read, Write},
@@ -14,8 +15,18 @@ use speech::vowels;
 
 use speech::generators;
 
+fn print_usage_text(args: &mut ArgsOs) {
+    let path = match args.nth(0) {
+        None => String::from("alonzo"),
+        Some(path) => path.into_string().unwrap(),
+    };
+
+    println!("Usage: {path} FILE");
+}
+
 fn main() {
-    let handle = rodio::DeviceSinkBuilder::open_default_sink().expect("open default audio stream");
+    let mut handle = rodio::DeviceSinkBuilder::open_default_sink().expect("open default audio stream");
+    handle.log_on_drop(false);
     let mixer = handle.mixer();
 
     let fricative_generators = fricative::FricativeGeneratorCollection::new();
@@ -26,7 +37,16 @@ fn main() {
 
     let mut wave: Vec<f32> = Vec::new();
 
-    let mut file = File::open("daisy.alo").expect("Failed to open phoneme file");
+    let mut args = args_os();
+
+    let mut file = match args.nth(1) {
+        Some(filename) => File::open(filename).expect("Failed to open phoneme file"),
+        None => {
+            print_usage_text(&mut args);
+            return;
+        }
+    };
+
     let mut contents = String::new();
     file.read_to_string(&mut contents)
         .expect("Failed to read phoneme file");
