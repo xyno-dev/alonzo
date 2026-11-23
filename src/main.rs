@@ -12,6 +12,7 @@ use std::{
 use speech::SAMPLE_RATE;
 use speech::consonants::{fricative, nasal, plosive, sonor};
 use speech::vowels;
+use speech::wav::Wav;
 
 fn print_usage_text(args: &mut ArgsOs) {
     let path = match args.nth(0) {
@@ -23,7 +24,8 @@ fn print_usage_text(args: &mut ArgsOs) {
 }
 
 fn main() {
-    let mut handle = rodio::DeviceSinkBuilder::open_default_sink().expect("open default audio stream");
+    let mut handle =
+        rodio::DeviceSinkBuilder::open_default_sink().expect("open default audio stream");
     handle.log_on_drop(false);
     let mixer = handle.mixer();
 
@@ -54,8 +56,6 @@ fn main() {
     let mut frequency: f32 = 0.0;
     let mut duration: u64 = 0;
 
-    let mut total_duration: u64 = 0;
-
     for token in tokens {
         if token.len() > 2 {
             match token.chars().nth(0).unwrap() {
@@ -65,8 +65,7 @@ fn main() {
                     let duration = token[1..]
                         .parse::<u64>()
                         .expect("Pause duration must be u64!");
-                    wave.extend(vec![0.0; (SAMPLE_RATE / 1000 * duration) as usize]);
-                    total_duration += duration
+                    wave.extend(vec![0.01; (SAMPLE_RATE / 1000 * duration) as usize]);
                 }
                 _ => {}
             }
@@ -97,7 +96,6 @@ fn main() {
 
                 _ => Vec::new(),
             });
-            total_duration += duration;
         }
     }
 
@@ -105,10 +103,11 @@ fn main() {
     // wave.extend(vowels::ee(250.00, 1000));
     // wave.extend(vowels::oo(250.00, 1000));
 
-    let mut out = File::create("out.raw").unwrap();
-    let _ = out.write_all(unsafe {
-        std::slice::from_raw_parts(wave.as_ptr() as *const u8, wave.len() * 4)
-    });
+    let total_duration = wave.len() as f32 / SAMPLE_RATE as f32;
+
+    let mut out = File::create("out.wav").unwrap();
+    let wav_file = Wav::from(&wave);
+    let _ = out.write_all(&wav_file.generate());
 
     let buffer = SamplesBuffer::new(
         ChannelCount::new(1).unwrap(),
@@ -118,5 +117,5 @@ fn main() {
 
     mixer.add(buffer);
 
-    thread::sleep(Duration::from_millis(total_duration));
+    thread::sleep(Duration::from_secs_f32(total_duration + 0.1));
 }
